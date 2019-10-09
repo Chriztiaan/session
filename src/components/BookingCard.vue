@@ -15,7 +15,7 @@
 					<v-avatar>
 						<v-img
 							class="elevation-2"
-							src="https://avataaars.io/?avatarStyle=Transparent&topType=ShortHairShortCurly&accessoriesType=Prescription02&hairColor=Black&facialHairType=Blank&clotheType=Hoodie&clotheColor=White&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light"
+							src="https://avataaars.io/?accessoriesType=Prescription02&avatarStyle=Transparent&clotheColor=Gray02&clotheType=Hoodie&eyeType=Default&eyebrowType=DefaultNatural&facialHairType=Blank&hairColor=BrownDark&mouthType=Default&skinColor=Light&topType=ShortHairShortRound"
 						></v-img>
 					</v-avatar>
 					Christiaan Landman

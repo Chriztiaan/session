@@ -11,6 +11,9 @@
 				<v-col cols="12" md="6" lg="4">
 					<BookingCard></BookingCard>
 				</v-col>
+				<v-col cols="12" md="6" lg="4">
+					<ListCard></ListCard>
+				</v-col>
 			</v-row>
 		</v-container>
 	</div>
@@ -19,9 +22,10 @@
 <script lang="ts">
 import Vue from 'vue';
 import BookingCard from './BookingCard.vue';
+import ListCard from './ListCard.vue';
 
 export default Vue.extend({
-	components: { BookingCard }
+	components: { BookingCard, ListCard }
 });
 </script>
 
