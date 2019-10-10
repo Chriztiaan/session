@@ -11,9 +11,6 @@
 				<v-col cols="12" md="6" lg="4">
 					<BookingCard></BookingCard>
 				</v-col>
-				<v-col cols="12" md="6" lg="4">
-					<ListCard></ListCard>
-				</v-col>
 			</v-row>
 		</v-container>
 	</div>
