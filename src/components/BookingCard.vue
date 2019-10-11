@@ -1,7 +1,9 @@
 <template>
 	<v-card :class="{ 'pl-2': !booking.isPending(), error: booking.isCancelled(), success: booking.isApproved() }">
 		<v-card>
-			<v-card-title>{{ booking.title }} </v-card-title>
+			<v-card-title class="pt-2 pb-0">
+				<v-text-field v-model="booking.title" class="title" label="Booking Name" dense single-line :rules="[rules.required]" color="secondary"> </v-text-field>
+			</v-card-title>
 			<v-card-text>
 				<v-row class="black--text" no-gutters="">
 					<span>{{ booking.time }} <v-icon color="secondary">mdi-clock-outline</v-icon></span>
@@ -10,7 +12,9 @@
 					<span>{{ booking.attendees }} <v-icon color="secondary">mdi-account-multiple</v-icon></span>
 				</v-row>
 				<template v-if="!dense">
-					{{ booking.information }}
+					<div>
+						<v-textarea v-model="booking.description" placeholder="Description..." class="body-2" no-resize dense :rows="3" solo flat hide-details></v-textarea>
+					</div>
 				</template>
 			</v-card-text>
 			<v-card-actions v-if="!dense" class="pr-1">
@@ -55,9 +59,7 @@ export default Vue.extend({
 					'16:30',
 					'Today',
 					4,
-					`This is a regular client that would like to be waitered by Kevin.
-				
-				This is just test text. So what would the point be?`,
+					`This is a regular client that would like to be waitered by Kevin. This is just test text. So what would the point be?`,
 					'Christiaan Landman'
 				);
 			}
@@ -65,6 +67,9 @@ export default Vue.extend({
 	},
 	data() {
 		return {
+			rules: {
+				required: value => !!value || 'Required.'
+			},
 			dense: false,
 			booking: null
 		};
@@ -86,3 +91,17 @@ export default Vue.extend({
 	}
 });
 </script>
+
+<style>
+div.v-input__slot {
+	padding-left: 0px !important;
+	color: red !important;
+}
+
+textarea {
+	margin-top: 0px !important;
+	padding-top: 0px !important;
+	color: rgba(0, 0, 0, 0.54) !important;
+	letter-spacing: 0.1px;
+}
+</style>

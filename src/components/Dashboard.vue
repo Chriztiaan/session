@@ -19,10 +19,9 @@
 <script lang="ts">
 import Vue from 'vue';
 import BookingCard from './BookingCard.vue';
-import ListCard from './ListCard.vue';
 
 export default Vue.extend({
-	components: { BookingCard, ListCard }
+	components: { BookingCard }
 });
 </script>
 

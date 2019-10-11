@@ -1,7 +1,7 @@
 <template>
 	<v-app class="red">
 		<Navbar></Navbar>
-		<v-container fluid style="min-height:94vh" class="primary lighten-3">
+		<v-container fluid style="min-height:94vh" class="primary lighten-4">
 			<Dashboard msg="Welcome to Your Vue.js App" />
 		</v-container>
 	</v-app>

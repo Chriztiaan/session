@@ -9,16 +9,16 @@ export default class Booking {
 	time: string;
 	date: string;
 	attendees: number;
-	information: string;
+	description: string;
 	creator: string;
 	status: BookingStatus;
 
-	constructor(title: string, time: string, date: string, attendees: number, information: string, creator: string) {
+	constructor(title: string, time: string, date: string, attendees: number, description: string, creator: string) {
 		this.title = title;
 		this.time = time;
 		this.date = date;
 		this.attendees = attendees;
-		this.information = information;
+		this.description = description;
 		this.creator = creator;
 		this.status = BookingStatus.Pending;
 	}
