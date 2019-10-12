@@ -2,14 +2,28 @@
 	<v-card :class="{ 'pl-2': !booking.isPending(), error: booking.isCancelled(), success: booking.isApproved() }">
 		<v-card>
 			<v-card-title class="pt-2 pb-0">
-				<v-text-field v-model="booking.title" class="title" label="Booking Name" dense single-line :rules="[rules.required]" color="secondary"> </v-text-field>
+				<v-text-field v-model="booking.title" :readonly="dense" class="title" label="Booking Name" dense single-line :rules="[rules.required]" color="secondary">
+				</v-text-field>
 			</v-card-title>
 			<v-card-text>
 				<v-row class="black--text" no-gutters="">
 					<span>{{ booking.time }} <v-icon color="secondary">mdi-clock-outline</v-icon></span>
 					<span class="ml-2">{{ booking.date }} <v-icon color="secondary">mdi-calendar-month</v-icon></span>
 					<v-spacer></v-spacer>
-					<span>{{ booking.attendees }} <v-icon color="secondary">mdi-account-multiple</v-icon></span>
+					<span>
+						<span v-if="!dense">
+							<v-btn v-if="booking.attendees > 0" style="margin-right: -2px" icon x-small @click="booking.attendees--">
+								<v-icon>mdi-minus-circle-outline</v-icon>
+							</v-btn>
+							<v-btn icon x-small @click="booking.attendees++">
+								<v-icon>mdi-plus-circle-outline</v-icon>
+							</v-btn>
+						</span>
+						<span class="mt-1">
+							{{ booking.attendees }}
+						</span>
+						<v-icon color="secondary">mdi-account-multiple</v-icon>
+					</span>
 				</v-row>
 				<template v-if="!dense">
 					<div>
@@ -73,6 +87,14 @@ export default Vue.extend({
 			dense: false,
 			booking: null
 		};
+	},
+	watch: {
+		booking(newVal): void {
+			this.$emit('input', newVal);
+		},
+		bookingProp(newVal): void {
+			this.booking = newVal;
+		}
 	},
 	created() {
 		this.booking = this.bookingProp;
