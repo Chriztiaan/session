@@ -17,14 +17,8 @@
 			<v-slide-y-transition hide-on-leave>
 				<div v-if="mode == 'list'">
 					<v-row>
-						<v-col cols="12" md="6" lg="4">
-							<BookingCard></BookingCard>
-						</v-col>
-						<v-col cols="12" md="6" lg="4">
-							<BookingCard></BookingCard>
-						</v-col>
-						<v-col cols="12" md="6" lg="4">
-							<BookingCard></BookingCard>
+						<v-col v-for="(card, index) in data" :key="index" cols="12" md="6" lg="4">
+							<BookingCard v-model="data[index]" @delete="deleteCard(index)"></BookingCard>
 						</v-col>
 					</v-row>
 				</div>
@@ -45,20 +39,44 @@
 				</div>
 			</v-slide-y-transition>
 		</v-container>
+		<CreateDialog></CreateDialog>
 	</div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 import BookingCard from './BookingCard.vue';
+import Booking from './../models/booking';
+import CreateDialog from './CreateDialog.vue';
 
 export default Vue.extend({
-	components: { BookingCard },
+	components: { BookingCard, CreateDialog },
 	data() {
 		return {
 			mode: '',
-			modeIcon: ''
+			modeIcon: '',
+			data: [
+				new Booking('Booking 1', '14:00', 'Today', 2, ``, 'Christiaan Landman'),
+				new Booking(
+					'Booking 2',
+					'16:30',
+					'Today',
+					4,
+					`This is a regular client that would like to be waitered by Kevin. This is just test text. So what would the point be?`,
+					'Christiaan Landman'
+				),
+				new Booking('Meetup with the bois @ Ginos', '12:00', 'Saturday', 6, `Heine wants to see everyone again.`, 'Christiaan Landman')
+			]
 		};
+	},
+	watch: {
+		data: {
+			handler: function(newVal): void {
+				// We should post the entry that got updated in the child component...
+				console.log(newVal);
+			},
+			deep: true
+		}
 	},
 	created() {
 		this.switchMode();
@@ -74,6 +92,10 @@ export default Vue.extend({
 				this.mode = calendar;
 				this.modeIcon = 'mdi-calendar-month';
 			}
+		},
+		deleteCard(index: number): void {
+			this.data.splice(index, 1);
+			console.log(index);
 		}
 	}
 });

@@ -1,5 +1,5 @@
 <template>
-	<v-card :class="{ 'pl-2': !booking.isPending(), error: booking.isCancelled(), success: booking.isApproved() }">
+	<v-card class="bookingcard" :class="{ 'pl-2': !booking.isPending(), error: booking.isCancelled(), success: booking.isApproved() }">
 		<v-card>
 			<v-card-title class="pt-2 pb-0">
 				<v-text-field v-model="booking.title" :readonly="dense" class="title" label="Booking Name" dense single-line :rules="[rules.required]" color="secondary">
@@ -44,13 +44,34 @@
 					</v-col>
 					<v-col class="pb-0" cols="8" offset="4" offset-sm="0" sm="4">
 						<span class="d-flex " :class="{ 'float-right': !$vuetify.breakpoint.xs }">
-							<v-btn v-if="booking.isPending()" icon large @click="approve">
-								<v-icon color="success">mdi-check-circle-outline</v-icon>
-							</v-btn>
-							<v-btn class="ml-1" icon large @click="cancel">
-								<v-icon v-if="booking.isPending()" color="error">mdi-close-circle-outline</v-icon>
-								<v-icon v-if="booking.isCancelled() || booking.isApproved()" color="warning lighten-2">mdi-dots-horizontal-circle-outline</v-icon>
-							</v-btn>
+							<v-tooltip top>
+								<template v-slot:activator="{ on }">
+									<v-btn v-if="booking.isPending()" icon large @click="approve" v-on="on">
+										<v-icon color="success">mdi-check-circle-outline</v-icon>
+									</v-btn>
+								</template>
+								<span> Approve </span>
+							</v-tooltip>
+							<v-tooltip top>
+								<template v-slot:activator="{ on }">
+									<v-btn class="ml-1" icon large @click="cancel" v-on="on">
+										<v-icon v-if="booking.isPending()" color="error">mdi-close-circle-outline</v-icon>
+										<v-icon v-if="booking.isCancelled() || booking.isApproved()" color="warning lighten-2">mdi-dots-horizontal-circle-outline</v-icon>
+									</v-btn>
+								</template>
+								<span>
+									<span v-if="booking.isPending()">Move back to Pending</span>
+									<span v-else>Cancel</span>
+								</span>
+							</v-tooltip>
+							<v-tooltip top>
+								<template v-slot:activator="{ on }">
+									<v-btn class="ml-1" icon large @click="deleteCard" v-on="on">
+										<v-icon color="">mdi-delete-circle-outline</v-icon>
+									</v-btn>
+								</template>
+								<span> Move to trash </span>
+							</v-tooltip>
 						</span>
 					</v-col>
 				</v-row>
@@ -65,24 +86,17 @@ import Booking from './../models/booking';
 
 export default Vue.extend({
 	props: {
-		bookingProp: {
+		value: {
 			type: Object as PropType<Booking>,
 			default: function(): Booking {
-				return new Booking(
-					'Booking Name',
-					'16:30',
-					'Today',
-					4,
-					`This is a regular client that would like to be waitered by Kevin. This is just test text. So what would the point be?`,
-					'Christiaan Landman'
-				);
+				return new Booking('Booking Test', '00:00', 'Today', 0, `Test description`, 'Test creator');
 			}
 		}
 	},
 	data() {
 		return {
 			rules: {
-				required: value => !!value || 'Required.'
+				required: (value): any => !!value || 'Required.'
 			},
 			dense: false,
 			booking: null
@@ -92,14 +106,17 @@ export default Vue.extend({
 		booking(newVal): void {
 			this.$emit('input', newVal);
 		},
-		bookingProp(newVal): void {
+		value(newVal): void {
 			this.booking = newVal;
 		}
 	},
 	created() {
-		this.booking = this.bookingProp;
+		this.booking = this.value;
 	},
 	methods: {
+		deleteCard(): void {
+			this.$emit('delete');
+		},
 		approve(): void {
 			this.booking.approve();
 		},
@@ -120,7 +137,7 @@ div.v-input__slot {
 	color: red !important;
 }
 
-textarea {
+.bookingcard textarea {
 	margin-top: 0px !important;
 	padding-top: 0px !important;
 	color: rgba(0, 0, 0, 0.54) !important;

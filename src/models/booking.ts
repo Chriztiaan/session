@@ -1,7 +1,7 @@
 export enum BookingStatus {
-	Pending,
-	Approved,
-	Cancelled
+	Pending = 'Pending',
+	Approved = 'Approved',
+	Cancelled = 'Cancelled'
 }
 
 export default class Booking {
