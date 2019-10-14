@@ -12,7 +12,7 @@
 					<v-spacer></v-spacer>
 					<span>
 						<span v-if="!dense">
-							<v-btn v-if="booking.attendees > 0" style="margin-right: -2px" icon x-small @click="booking.attendees--">
+							<v-btn :disabled="booking.attendees == 0" style="margin-right: -2px" icon x-small @click="booking.attendees--">
 								<v-icon>mdi-minus-circle-outline</v-icon>
 							</v-btn>
 							<v-btn icon x-small @click="booking.attendees++">
@@ -44,9 +44,9 @@
 					</v-col>
 					<v-col class="pb-0" cols="8" offset="4" offset-sm="0" sm="4">
 						<span class="d-flex " :class="{ 'float-right': !$vuetify.breakpoint.xs }">
-							<v-tooltip top>
+							<v-tooltip v-if="booking.isPending()" top>
 								<template v-slot:activator="{ on }">
-									<v-btn v-if="booking.isPending()" icon large @click="approve" v-on="on">
+									<v-btn icon large @click="approve" v-on="on">
 										<v-icon color="success">mdi-check-circle-outline</v-icon>
 									</v-btn>
 								</template>
@@ -60,7 +60,7 @@
 									</v-btn>
 								</template>
 								<span>
-									<span v-if="booking.isPending()">Move back to Pending</span>
+									<span v-if="!booking.isPending()">Move back to Pending</span>
 									<span v-else>Cancel</span>
 								</span>
 							</v-tooltip>

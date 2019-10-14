@@ -3,8 +3,9 @@
 		<v-container>
 			<v-row no-gutters>
 				<v-spacer></v-spacer>
+				<CreateDialog v-model="dialog" @submit="addBooking"></CreateDialog>
 				<v-fab-transition>
-					<v-btn class="mr-2" color="secondary" dark top right>
+					<v-btn class="mr-2" color="secondary" dark top right @click="dialog = true">
 						<v-icon>mdi-plus</v-icon>
 					</v-btn>
 				</v-fab-transition>
@@ -18,7 +19,7 @@
 				<div v-if="mode == 'list'">
 					<v-row>
 						<v-col v-for="(card, index) in data" :key="index" cols="12" md="6" lg="4">
-							<BookingCard v-model="data[index]" @delete="deleteCard(index)"></BookingCard>
+							<BookingCard v-model="data[index]" @delete="deleteBooking(index)"></BookingCard>
 						</v-col>
 					</v-row>
 				</div>
@@ -39,7 +40,6 @@
 				</div>
 			</v-slide-y-transition>
 		</v-container>
-		<CreateDialog></CreateDialog>
 	</div>
 </template>
 
@@ -53,6 +53,7 @@ export default Vue.extend({
 	components: { BookingCard, CreateDialog },
 	data() {
 		return {
+			dialog: false,
 			mode: '',
 			modeIcon: '',
 			data: [
@@ -93,9 +94,11 @@ export default Vue.extend({
 				this.modeIcon = 'mdi-calendar-month';
 			}
 		},
-		deleteCard(index: number): void {
+		addBooking(booking: Booking): void {
+			this.data.push(booking);
+		},
+		deleteBooking(index: number): void {
 			this.data.splice(index, 1);
-			console.log(index);
 		}
 	}
 });

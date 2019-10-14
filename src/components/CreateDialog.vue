@@ -1,7 +1,7 @@
 <template>
 	<v-row justify="center">
-		<v-dialog v-model="dialog" persistent scrollable max-width="450px">
-			<v-card>
+		<v-dialog v-model="value" persistent scrollable max-width="450px">
+			<v-card id="style-2">
 				<v-card-title class="headline primary white--text">
 					<span class="headline">New Booking</span>
 				</v-card-title>
@@ -9,38 +9,38 @@
 					<v-container>
 						<v-row>
 							<v-col cols="12">
-								<v-text-field label="Booking name" dense required hide-details></v-text-field>
+								<v-text-field v-model="booking.title" label="Booking name" dense required hide-details></v-text-field>
 							</v-col>
 							<v-col cols="12" md="4">
-								<v-text-field readonly type="number" dense label="Attendees" required hide-details></v-text-field>
+								<v-text-field v-model="booking.attendees" readonly type="number" dense label="Attendees" required hide-details></v-text-field>
 							</v-col>
-							<v-col cols="12" md="3">
-								<span class="ml-n4">
-									<v-btn icon class="ml-n1">
+							<v-col cols="12" md="3" class="pl-0">
+								<span class="">
+									<v-btn :disabled="booking.attendees == 0" icon class="ml-n1" @click="booking.attendees--">
 										<v-icon>mdi-minus-circle-outline</v-icon>
 									</v-btn>
-									<v-btn icon class="ml-n1">
+									<v-btn icon class="ml-n1" @click="booking.attendees++">
 										<v-icon>mdi-plus-circle-outline</v-icon>
 									</v-btn>
 								</span>
 							</v-col>
-							<v-col cols="12" md="5" style="display: inline-flex;">
-								<span>Test</span>
-								<vue-timepicker :minute-interval="10"></vue-timepicker>
+							<v-col cols="12" md="5" class="pt-4" style="display: inline-flex;">
+								<span class="pt-1 ml-n2 mr-2 body-1">Time</span>
+								<vue-timepicker v-model="booking.time" hide-clear-button :minute-interval="10"></vue-timepicker>
 							</v-col>
 							<v-col cols="12">
-								<v-textarea label="Description" no-resize auto-grow :rows="1" hide-details></v-textarea>
+								<v-textarea v-model="booking.description" label="Description" no-resize auto-grow :rows="1" hide-details></v-textarea>
 							</v-col>
 							<v-col cols="12" class="">
-								<v-date-picker v-model="date" full-width="" header-color="primary" color="secondary" reactive></v-date-picker>
+								<v-date-picker v-model="booking.date" full-width="" header-color="primary" color="secondary" reactive></v-date-picker>
 							</v-col>
 						</v-row>
 					</v-container>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="secondary" text @click="dialog = false">Close</v-btn>
-					<v-btn color="secondary" @click="dialog = false">Save</v-btn>
+					<v-btn color="secondary" text @click="show = false">Cancel</v-btn>
+					<v-btn color="secondary" @click="submit">Save</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -50,17 +50,46 @@
 <script lang="ts">
 import Vue from 'vue';
 import VueTimepicker from 'vue2-timepicker';
-
+import Booking, { BookingStatus } from './../models/booking';
 // CSS
 import 'vue2-timepicker/dist/VueTimepicker.css';
 
 export default Vue.extend({
 	components: { VueTimepicker },
+	props: {
+		value: {
+			type: Boolean,
+			default: false
+		}
+	},
 	data() {
 		return {
-			dialog: true,
-			date: null
+			show: false,
+			date: null,
+			booking: null
 		};
+	},
+	watch: {
+		value(newVal: boolean): void {
+			this.show = newVal;
+		},
+		show(newVal: boolean): void {
+			this.$emit('input', newVal);
+		}
+	},
+	created() {
+		this.show = this.value;
+		this.reset();
+	},
+	methods: {
+		reset(): void {
+			this.booking = new Booking('', '12:00', new Date().toISOString().substr(0, 10), 1, ``, 'Test creator');
+		},
+		submit(): void {
+			this.$emit('submit', this.booking);
+			this.reset();
+			this.show = false;
+		}
 	}
 });
 </script>
@@ -68,5 +97,28 @@ export default Vue.extend({
 <style>
 input.display-time {
 	max-width: 50% !important;
+}
+
+.minutes::-webkit-scrollbar-track,
+.hours::-webkit-scrollbar-track,
+.v-card__text::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
+}
+
+.minutes::-webkit-scrollbar,
+.hours::-webkit-scrollbar,
+.v-card__text::-webkit-scrollbar {
+	width: 8px;
+	height: 10px;
+	background-color: #f5f5f5 !important;
+}
+
+.minutes::-webkit-scrollbar-thumb,
+.hours::-webkit-scrollbar-thumb,
+.v-card__text::-webkit-scrollbar-thumb {
+	border-radius: 6px;
+	background-color: rgb(233, 30, 99);
+	height: 120px;
 }
 </style>
