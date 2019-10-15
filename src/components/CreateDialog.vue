@@ -7,39 +7,41 @@
 				</v-card-title>
 				<v-card-text>
 					<v-container>
-						<v-row>
-							<v-col cols="12">
-								<v-text-field v-model="booking.title" label="Booking name" dense required hide-details></v-text-field>
-							</v-col>
-							<v-col cols="12" md="4">
-								<v-text-field v-model="booking.attendees" readonly type="number" dense label="Attendees" required hide-details></v-text-field>
-							</v-col>
-							<v-col cols="12" md="3" class="pl-0">
-								<span class="">
-									<v-btn :disabled="booking.attendees == 0" icon class="ml-n1" @click="booking.attendees--">
-										<v-icon>mdi-minus-circle-outline</v-icon>
-									</v-btn>
-									<v-btn icon class="ml-n1" @click="booking.attendees++">
-										<v-icon>mdi-plus-circle-outline</v-icon>
-									</v-btn>
-								</span>
-							</v-col>
-							<v-col cols="12" md="5" class="pt-4" style="display: inline-flex;">
-								<span class="pt-1 ml-n2 mr-2 body-1">Time</span>
-								<vue-timepicker v-model="booking.time" hide-clear-button :minute-interval="10"></vue-timepicker>
-							</v-col>
-							<v-col cols="12">
-								<v-textarea v-model="booking.description" label="Description" no-resize auto-grow :rows="1" hide-details></v-textarea>
-							</v-col>
-							<v-col cols="12" class="">
-								<v-date-picker v-model="booking.date" full-width="" header-color="primary" color="secondary" reactive></v-date-picker>
-							</v-col>
-						</v-row>
+						<v-form ref="tester">
+							<v-row>
+								<v-col cols="12">
+									<v-text-field v-model="booking.title" label="Booking name" dense required :rules="[rules.required]"></v-text-field>
+								</v-col>
+								<v-col cols="12" md="4">
+									<v-text-field v-model="booking.attendees" readonly type="number" dense label="Attendees" required hide-details></v-text-field>
+								</v-col>
+								<v-col cols="12" md="3" class="pl-0">
+									<span class="">
+										<v-btn :disabled="booking.attendees == 0" icon class="ml-n1" @click="booking.attendees--">
+											<v-icon>mdi-minus-circle-outline</v-icon>
+										</v-btn>
+										<v-btn icon class="ml-n1" @click="booking.attendees++">
+											<v-icon>mdi-plus-circle-outline</v-icon>
+										</v-btn>
+									</span>
+								</v-col>
+								<v-col cols="12" md="5" class="pt-4" style="display: inline-flex;">
+									<span class="pt-1 ml-n2 mr-2 body-1">Time</span>
+									<vue-timepicker v-model="booking.time" hide-clear-button :minute-interval="10"></vue-timepicker>
+								</v-col>
+								<v-col cols="12">
+									<v-textarea v-model="booking.description" label="Description" no-resize auto-grow :rows="1" hide-details></v-textarea>
+								</v-col>
+								<v-col cols="12" class="">
+									<v-date-picker v-model="booking.date" full-width="" header-color="primary" color="secondary" reactive></v-date-picker>
+								</v-col>
+							</v-row>
+						</v-form>
 					</v-container>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="secondary" text @click="show = false">Cancel</v-btn>
+					<v-btn color="secondary" text @click="cancel">Cancel</v-btn>
 					<v-btn color="secondary" @click="submit">Save</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -66,7 +68,10 @@ export default Vue.extend({
 		return {
 			show: false,
 			date: null,
-			booking: null
+			booking: null,
+			rules: {
+				required: (value): any => !!value || 'Required'
+			}
 		};
 	},
 	watch: {
@@ -85,9 +90,15 @@ export default Vue.extend({
 		reset(): void {
 			this.booking = new Booking('', '12:00', new Date().toISOString().substr(0, 10), 1, ``, 'Test creator');
 		},
+		cancel(): void {
+			this.reset();
+			this.$refs.tester.resetValidation();
+			this.show = false;
+		},
 		submit(): void {
 			this.$emit('submit', this.booking);
 			this.reset();
+			this.$refs.tester.resetValidation();
 			this.show = false;
 		}
 	}

@@ -96,7 +96,7 @@ export default Vue.extend({
 	data() {
 		return {
 			rules: {
-				required: (value): any => !!value || 'Required.'
+				required: (value): any => !!value || 'Required'
 			},
 			dense: false,
 			booking: null
