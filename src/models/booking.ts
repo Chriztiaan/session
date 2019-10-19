@@ -7,13 +7,13 @@ export enum BookingStatus {
 export default class Booking {
 	title: string;
 	time: string;
-	date: string;
+	date: string | any;
 	attendees: number;
 	description: string;
 	creator: string;
 	status: BookingStatus;
 
-	constructor(title: string, time: string, date: string, attendees: number, description: string, creator: string) {
+	constructor(title: string, time: string, date: Date, attendees: number, description: string, creator: string) {
 		this.title = title;
 		this.time = time;
 		this.date = date;

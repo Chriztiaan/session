@@ -2,12 +2,14 @@ import Vue from 'vue';
 import App from './App.vue';
 import '@mdi/font/css/materialdesignicons.css';
 import VueRouter from 'vue-router';
+import VueMoment from 'vue-moment';
 
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
 import routes from './routes';
 
+Vue.use(VueMoment);
 Vue.config.productionTip = false;
 
 Vue.use(Vuetify);

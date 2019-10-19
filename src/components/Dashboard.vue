@@ -48,6 +48,7 @@ import Vue from 'vue';
 import BookingCard from './BookingCard.vue';
 import Booking from './../models/booking';
 import CreateDialog from './CreateDialog.vue';
+import moment from 'moment-timezone';
 
 export default Vue.extend({
 	components: { BookingCard, CreateDialog },
@@ -57,16 +58,16 @@ export default Vue.extend({
 			mode: '',
 			modeIcon: '',
 			data: [
-				new Booking('Booking 1', '14:00', 'Today', 2, ``, 'Christiaan Landman'),
+				new Booking('Booking 1', '14:00', new Date(), 2, ``, 'Christiaan Landman'),
 				new Booking(
 					'Booking 2',
 					'16:30',
-					'Today',
+					new Date(),
 					4,
 					`This is a regular client that would like to be waitered by Kevin. This is just test text. So what would the point be?`,
 					'Christiaan Landman'
 				),
-				new Booking('Meetup with the bois @ Ginos', '12:00', 'Saturday', 6, `Heine wants to see everyone again.`, 'Christiaan Landman')
+				new Booking('Meetup with the bois @ Ginos', '12:00', new Date(), 6, `Heine wants to see everyone again.`, 'Christiaan Landman')
 			]
 		};
 	},

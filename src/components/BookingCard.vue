@@ -8,7 +8,7 @@
 			<v-card-text>
 				<v-row class="black--text" no-gutters="">
 					<span>{{ booking.time }} <v-icon color="secondary">mdi-clock-outline</v-icon></span>
-					<span class="ml-2">{{ booking.date }} <v-icon color="secondary">mdi-calendar-month</v-icon></span>
+					<span class="ml-2">{{ booking.date | moment('dddd') }} <v-icon color="secondary">mdi-calendar-month</v-icon></span>
 					<v-spacer></v-spacer>
 					<span>
 						<span v-if="!dense">
@@ -89,7 +89,7 @@ export default Vue.extend({
 		value: {
 			type: Object as PropType<Booking>,
 			default: function(): Booking {
-				return new Booking('Booking Test', '00:00', 'Today', 0, `Test description`, 'Test creator');
+				return new Booking('Booking Test', '00:00', new Date(), 0, `Test description`, 'Test creator');
 			}
 		}
 	},

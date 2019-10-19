@@ -33,7 +33,7 @@
 									<v-textarea v-model="booking.description" label="Description" no-resize auto-grow :rows="1" hide-details></v-textarea>
 								</v-col>
 								<v-col cols="12" class="">
-									<v-date-picker v-model="booking.date" full-width="" header-color="primary" color="secondary" reactive></v-date-picker>
+									<v-date-picker v-model="date" full-width="" header-color="primary" color="secondary" reactive></v-date-picker>
 								</v-col>
 							</v-row>
 						</v-form>
@@ -52,7 +52,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import VueTimepicker from 'vue2-timepicker';
-import Booking, { BookingStatus } from './../models/booking';
+import Booking from './../models/booking';
 // CSS
 import 'vue2-timepicker/dist/VueTimepicker.css';
 
@@ -88,7 +88,8 @@ export default Vue.extend({
 	},
 	methods: {
 		reset(): void {
-			this.booking = new Booking('', '12:00', new Date().toISOString().substr(0, 10), 1, ``, 'Test creator');
+			this.date = new Date().toISOString().substr(0, 10);
+			this.booking = new Booking('', '12:00', new Date(), 1, ``, 'Test creator');
 		},
 		cancel(): void {
 			this.reset();
@@ -96,6 +97,7 @@ export default Vue.extend({
 			this.show = false;
 		},
 		submit(): void {
+			this.booking.date = this.date;
 			this.$emit('submit', this.booking);
 			this.reset();
 			this.$refs.tester.resetValidation();
