@@ -8,7 +8,8 @@
 			<v-card-text>
 				<v-row class="black--text" no-gutters="">
 					<span>{{ booking.time }} <v-icon color="secondary">mdi-clock-outline</v-icon></span>
-					<span class="ml-2">{{ booking.date | moment('dddd') }} <v-icon color="secondary">mdi-calendar-month</v-icon></span>
+					<!-- booking.date | moment('dddd') -->
+					<span class="ml-2">{{ date }} <v-icon color="secondary">mdi-calendar-month</v-icon></span>
 					<v-spacer></v-spacer>
 					<span>
 						<span v-if="!dense">
@@ -83,6 +84,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue';
 import Booking from './../models/booking';
+import moment from 'moment-timezone';
 
 export default Vue.extend({
 	props: {
@@ -101,6 +103,29 @@ export default Vue.extend({
 			dense: false,
 			booking: null
 		};
+	},
+	computed: {
+		date(): string {
+			// 1. Is yesterday?
+			const yesterday = new Date();
+			yesterday.setDate(yesterday.getDate() - 1);
+			if (yesterday.toDateString() == this.booking.date.toDateString()) {
+				return 'Yesterday';
+			}
+			// 2. Is today?
+			const today = new Date();
+			if (today.toDateString() == this.booking.date.toDateString()) {
+				return 'Today';
+			}
+
+			// 3. Is tomorrow?
+			const tomorrow = new Date();
+			tomorrow.setDate(tomorrow.getDate() + 1);
+			if (tomorrow.toDateString() == this.booking.date.toDateString()) {
+				return 'Tomorrow';
+			}
+			return moment(this.booking.date).format('dddd, D MMMM');
+		}
 	},
 	watch: {
 		booking(newVal): void {

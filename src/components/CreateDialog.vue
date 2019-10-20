@@ -97,7 +97,7 @@ export default Vue.extend({
 			this.show = false;
 		},
 		submit(): void {
-			this.booking.date = this.date;
+			this.booking.date = new Date(this.date);
 			this.$emit('submit', this.booking);
 			this.reset();
 			this.$refs.tester.resetValidation();
