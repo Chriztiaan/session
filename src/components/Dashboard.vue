@@ -2,19 +2,32 @@
 	<div>
 		<v-container>
 			<v-row no-gutters>
+				<span class="headline mt-2"> {{ title }} </span>
 				<v-spacer></v-spacer>
 				<CreateDialog v-model="dialog" @submit="addBooking"></CreateDialog>
 				<v-fab-transition>
-					<v-btn class="mr-2" color="secondary" dark top right @click="dialog = true">
-						<v-icon>mdi-plus</v-icon>
-					</v-btn>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on }">
+							<v-btn class="mr-2" color="secondary" dark top right @click="dialog = true" v-on="on">
+								<v-icon>mdi-plus</v-icon>
+							</v-btn>
+						</template>
+						<span>Create new booking</span>
+					</v-tooltip>
 				</v-fab-transition>
 				<v-fab-transition>
-					<v-btn color="secondary" dark top right @click="switchMode">
-						<v-icon>{{ modeIcon }}</v-icon>
-					</v-btn>
+					<v-tooltip bottom>
+						<template v-slot:activator="{ on }">
+							<v-btn color="secondary" dark top right @click="switchMode" v-on="on">
+								<v-icon>{{ modeIcon }}</v-icon>
+							</v-btn>
+						</template>
+						<span v-if="mode == 'calendar'">View booking list</span>
+						<span v-else>View calendar</span>
+					</v-tooltip>
 				</v-fab-transition>
 			</v-row>
+			<v-divider class="mt-2"></v-divider>
 			<v-slide-y-transition hide-on-leave>
 				<div v-if="mode == 'list'">
 					<v-row>
@@ -27,14 +40,8 @@
 			<v-slide-y-transition hide-on-leave>
 				<div v-if="mode == 'calendar'">
 					<v-row>
-						<v-col cols="12" md="6" lg="4">
-							<BookingCard></BookingCard>
-						</v-col>
-						<v-col cols="12" md="6" lg="4">
-							<BookingCard></BookingCard>
-						</v-col>
-						<v-col cols="12" md="6" lg="4">
-							<BookingCard></BookingCard>
+						<v-col cols="12">
+							<Calendar></Calendar>
 						</v-col>
 					</v-row>
 				</div>
@@ -48,13 +55,15 @@ import Vue from 'vue';
 import BookingCard from './BookingCard.vue';
 import Booking from './../models/booking';
 import CreateDialog from './CreateDialog.vue';
+import Calendar from './Calendar.vue';
 
 export default Vue.extend({
-	components: { BookingCard, CreateDialog },
+	components: { BookingCard, CreateDialog, Calendar },
 	data() {
 		return {
 			dialog: false,
 			mode: '',
+			title: '',
 			modeIcon: '',
 			data: [
 				new Booking('Booking 1', '14:00', new Date(), 2, ``, 'Christiaan Landman'),
@@ -86,12 +95,15 @@ export default Vue.extend({
 		switchMode(): void {
 			const list = 'list';
 			const calendar = 'calendar';
-			if (this.mode == calendar || this.mode == '') {
+			// || this.mode == ''
+			if (this.mode == calendar) {
 				this.mode = list;
-				this.modeIcon = 'mdi-calendar-text';
+				this.title = 'Bookings';
+				this.modeIcon = 'mdi-calendar-month';
 			} else {
 				this.mode = calendar;
-				this.modeIcon = 'mdi-calendar-month';
+				this.title = 'Calendar';
+				this.modeIcon = 'mdi-calendar-text';
 			}
 		},
 		addBooking(booking: Booking): void {
