@@ -7,7 +7,7 @@
 				</v-card-title>
 				<v-card-text>
 					<v-container>
-						<v-form ref="tester">
+						<v-form ref="form" v-model="valid">
 							<v-row>
 								<v-col cols="12">
 									<v-text-field v-model="booking.title" label="Booking name" dense required :rules="[rules.required]"></v-text-field>
@@ -42,7 +42,7 @@
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="secondary" text @click="cancel">Cancel</v-btn>
-					<v-btn color="secondary" @click="submit">Save</v-btn>
+					<v-btn :disabled="!valid" color="secondary" @click="submit">Save</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -53,7 +53,6 @@
 import Vue from 'vue';
 import VueTimepicker from 'vue2-timepicker';
 import Booking from './../models/booking';
-// CSS
 import 'vue2-timepicker/dist/VueTimepicker.css';
 
 export default Vue.extend({
@@ -66,6 +65,7 @@ export default Vue.extend({
 	},
 	data() {
 		return {
+			valid: null,
 			show: false,
 			date: null,
 			booking: null,
@@ -86,6 +86,9 @@ export default Vue.extend({
 		this.show = this.value;
 		this.reset();
 	},
+	updated() {
+		this.$refs.form.validate();
+	},
 	methods: {
 		reset(): void {
 			this.date = new Date().toISOString().substr(0, 10);
@@ -93,14 +96,14 @@ export default Vue.extend({
 		},
 		cancel(): void {
 			this.reset();
-			this.$refs.tester.resetValidation();
+			this.$refs.form.resetValidation();
 			this.show = false;
 		},
 		submit(): void {
 			this.booking.date = new Date(this.date);
 			this.$emit('submit', this.booking);
 			this.reset();
-			this.$refs.tester.resetValidation();
+			this.$refs.form.resetValidation();
 			this.show = false;
 		}
 	}

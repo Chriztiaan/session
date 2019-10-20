@@ -8,7 +8,6 @@
 			<v-card-text>
 				<v-row class="black--text" no-gutters="">
 					<span>{{ booking.time }} <v-icon color="secondary">mdi-clock-outline</v-icon></span>
-					<!-- booking.date | moment('dddd') -->
 					<span class="ml-2">{{ date }} <v-icon color="secondary">mdi-calendar-month</v-icon></span>
 					<v-spacer></v-spacer>
 					<span>
