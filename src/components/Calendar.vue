@@ -3,7 +3,7 @@
 		<v-col>
 			<v-sheet height="64">
 				<v-toolbar flat color="white">
-					<v-btn outlined class="mr-4" @click="setToday">
+					<v-btn class="mr-4" color="secondary" @click="setToday">
 						Today
 					</v-btn>
 					<v-btn fab text small @click="prev">
@@ -14,25 +14,20 @@
 					</v-btn>
 					<v-toolbar-title>{{ title }}</v-toolbar-title>
 					<v-spacer></v-spacer>
-					<v-menu bottom right>
-						<template v-slot:activator="{ on }">
-							<v-btn outlined v-on="on">
-								<span>{{ typeToLabel[type] }}</span>
-								<v-icon right>mdi-menu-down</v-icon>
-							</v-btn>
-						</template>
-						<v-list>
-							<v-list-item @click="type = 'day'">
-								<v-list-item-title>Day</v-list-item-title>
-							</v-list-item>
-							<v-list-item @click="type = 'week'">
-								<v-list-item-title>Week</v-list-item-title>
-							</v-list-item>
-							<v-list-item @click="type = 'month'">
-								<v-list-item-title>Month</v-list-item-title>
-							</v-list-item>
-						</v-list>
-					</v-menu>
+					<v-btn-toggle v-model="type" dense class="mr-2" color="secondary">
+						<v-btn value="day">
+							<span class="hidden-sm-and-down">Day</span>
+							<v-icon>mdi-calendar</v-icon>
+						</v-btn>
+						<v-btn value="week">
+							<span class="hidden-sm-and-down">Week</span>
+							<v-icon>mdi-calendar-range</v-icon>
+						</v-btn>
+						<v-btn value="month">
+							<span class="hidden-sm-and-down">Month</span>
+							<v-icon>mdi-calendar-month</v-icon>
+						</v-btn>
+					</v-btn-toggle>
 				</v-toolbar>
 			</v-sheet>
 			<v-sheet height="600">
