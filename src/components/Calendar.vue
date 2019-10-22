@@ -1,5 +1,5 @@
 <template>
-	<v-card>
+	<v-card color="secondary">
 		<v-col>
 			<v-sheet height="64">
 				<v-toolbar flat color="white">
@@ -35,7 +35,7 @@
 					ref="calendar"
 					v-model="focus"
 					color="secondary"
-					:events="events"
+					:events="bookingEvents"
 					:event-color="getEventColor"
 					:event-margin-bottom="3"
 					:now="today"
@@ -46,28 +46,8 @@
 					@change="updateRange"
 				></v-calendar>
 				<v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" offset-x>
-					<v-card color="grey lighten-4" min-width="350px" flat>
-						<v-toolbar :color="selectedEvent.color" dark>
-							<v-btn icon>
-								<v-icon>mdi-pencil</v-icon>
-							</v-btn>
-							<v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-							<v-spacer></v-spacer>
-							<v-btn icon>
-								<v-icon>mdi-heart</v-icon>
-							</v-btn>
-							<v-btn icon>
-								<v-icon>mdi-dots-vertical</v-icon>
-							</v-btn>
-						</v-toolbar>
-						<v-card-text>
-							<span v-html="selectedEvent.details"></span>
-						</v-card-text>
-						<v-card-actions>
-							<v-btn text color="secondary" @click="selectedOpen = false">
-								Cancel
-							</v-btn>
-						</v-card-actions>
+					<v-card class="pa-1" color="primary" width="350">
+						<BookingCard></BookingCard>
 					</v-card>
 				</v-menu>
 			</v-sheet>
@@ -77,7 +57,20 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import BookingCard from './BookingCard.vue';
+import Booking from './../models/booking';
+import moment from 'moment-timezone';
+
 export default Vue.extend({
+	components: { BookingCard },
+	props: {
+		bookings: {
+			type: Array,
+			default: function(): [] {
+				return [];
+			}
+		}
+	},
 	data: () => ({
 		today: new Date().toISOString().substring(0, 10),
 		focus: new Date().toISOString().substring(0, 10),
@@ -96,8 +89,8 @@ export default Vue.extend({
 			{
 				name: 'Vacation',
 				details: 'Going to the beach!',
-				start: '2018-12-29',
-				end: '2019-01-01',
+				start: '2019-10-29 09:10',
+				end: '2019-10-29',
 				color: 'blue'
 			},
 			{
@@ -220,7 +213,19 @@ export default Vue.extend({
 		]
 	}),
 	computed: {
-		title() {
+		bookingEvents(): any[] {
+			const colors = ['red', 'pink', 'purple', 'deep-purple', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'amber', 'orange', 'deep-orange'];
+			const bookingEvents = [];
+			for (let booking of this.bookings) {
+				booking.name = booking.title;
+				booking.start = moment(booking.date).format('YYYY-MM-DD') + ' ' + booking.time;
+				booking.end = moment(booking.date).format('YYYY-MM-DD');
+				booking.color = colors[Math.floor(Math.random() * colors.length)];
+				bookingEvents.push(booking);
+			}
+			return bookingEvents;
+		},
+		title(): string {
 			const { start, end } = this;
 			if (!start || !end) {
 				return '';
@@ -248,34 +253,37 @@ export default Vue.extend({
 			}
 			return '';
 		},
-		monthFormatter() {
+		monthFormatter(): void {
 			return this.$refs.calendar.getFormatter({
 				timeZone: 'UTC',
 				month: 'long'
 			});
 		}
 	},
+	created() {
+		console.log(this.bookingEvents);
+	},
 	mounted() {
 		this.$refs.calendar.checkChange();
 	},
 	methods: {
-		viewDay({ date }) {
+		viewDay({ date }): void {
 			this.focus = date;
 			this.type = 'day';
 		},
 		getEventColor(event) {
 			return event.color;
 		},
-		setToday() {
+		setToday(): void {
 			this.focus = this.today;
 		},
-		prev() {
+		prev(): void {
 			this.$refs.calendar.prev();
 		},
-		next() {
+		next(): void {
 			this.$refs.calendar.next();
 		},
-		showEvent({ nativeEvent, event }) {
+		showEvent({ nativeEvent, event }): void {
 			const open = () => {
 				this.selectedEvent = event;
 				this.selectedElement = nativeEvent.target;
@@ -291,12 +299,12 @@ export default Vue.extend({
 
 			nativeEvent.stopPropagation();
 		},
-		updateRange({ start, end }) {
+		updateRange({ start, end }): void {
 			// You could load events from an outside source (like database) now that we have the start and end dates on the calendar
 			this.start = start;
 			this.end = end;
 		},
-		nth(d) {
+		nth(d): any {
 			return d > 3 && d < 21 ? 'th' : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10];
 		}
 	}

@@ -41,7 +41,7 @@
 				<div v-if="mode == 'calendar'">
 					<v-row>
 						<v-col cols="12">
-							<Calendar></Calendar>
+							<Calendar :bookings="data"></Calendar>
 						</v-col>
 					</v-row>
 				</div>
@@ -70,7 +70,7 @@ export default Vue.extend({
 				new Booking(
 					'Booking 2',
 					'16:30',
-					new Date('2019-8-16'),
+					new Date('2019-10-16'),
 					4,
 					`This is a regular client that would like to be waitered by Kevin. This is just test text. So what would the point be?`,
 					'Christiaan Landman'

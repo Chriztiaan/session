@@ -6,6 +6,7 @@ A restaurant booking application built with Vue.js and Laravel.
 
 ![Alt text](./src/assets/screenshots/screen_1.jpg?raw=true 'Dashboard')
 ![Alt text](./src/assets/screenshots/screen_2.jpg?raw=true 'Creation Dialog')
+![Alt text](./src/assets/screenshots/screen_3.jpg?raw=true 'Popover')
 
 ## Project setup
 
