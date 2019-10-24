@@ -17,18 +17,18 @@ export default Vue.extend({});
 </script>
 
 <style>
-.card-text::-webkit-scrollbar-track {
+#style-1::-webkit-scrollbar-track {
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 }
 
-.card-text::-webkit-scrollbar {
+#style-1::-webkit-scrollbar {
 	width: 8px;
 	height: 10px;
 	background-color: #f5f5f5 !important;
 }
 
-.card-text::-webkit-scrollbar-thumb {
+#style-1::-webkit-scrollbar-thumb {
 	border-radius: 6px;
 	background-color: #555;
 	height: 120px;

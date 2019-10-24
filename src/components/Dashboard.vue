@@ -79,15 +79,7 @@ export default Vue.extend({
 			]
 		};
 	},
-	watch: {
-		data: {
-			handler: function(newVal): void {
-				// We should post the entry that got updated in the child component...
-				console.log(newVal);
-			},
-			deep: true
-		}
-	},
+	watch: {},
 	created() {
 		this.switchMode();
 	},

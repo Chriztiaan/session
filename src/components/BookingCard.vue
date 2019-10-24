@@ -35,10 +35,7 @@
 				<v-row no-gutters>
 					<v-col class="pb-0" cols="12" sm="8">
 						<v-avatar size="42">
-							<v-img
-								class="elevation-2"
-								src="https://avataaars.io/?accessoriesType=Prescription02&avatarStyle=Transparent&clotheColor=Gray02&clotheType=Hoodie&eyeType=Default&eyebrowType=DefaultNatural&facialHairType=Blank&hairColor=BrownDark&mouthType=Default&skinColor=Light&topType=ShortHairShortRound"
-							></v-img>
+							<v-img class="elevation-2" src="https://api.adorable.io/avatars/285/hahaha.png"></v-img>
 						</v-avatar>
 						{{ booking.creator }}
 					</v-col>
